@@ -1,0 +1,41 @@
+<div class="container main-container">
+    <div class="row row-centered content" style="margin-bottom: 50px;">
+        <div class="col-md-8 col-centered">
+        	<div class="row row-centered" style="margin-top: 20px;">
+        		<div class="col-md-12 form-group col-centered">
+        			<h1>Section {{section_counter}}: Continued from {{new_continued_from}} </h1>
+        			<input type="text" class="form-control" placeholder="Title" ng-model="newEntry.title" id="title_{{section_counter}}">
+        		</div>
+        	</div>
+        	<div class="row row-centered">
+        		<div class="col-md-12 form-group col-centered">
+        			<input type="text" class="form-control" placeholder="Description" ng-model="newEntry.desc" id="desc_{{section_counter}}">
+        		</div>
+        	</div>
+        	<div class="row row-centered">
+        		<div class="col-md-12 col-centered">
+        			<textarea class="form-control" placeholder="What happens now?" rows="20" ng-model="newEntry.body" id="body_{{section_counter}}"></textarea>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div class="row row-centered" ng-repeat="entry in entries">
+    	<div class="col-md-8 col-centered">
+    		<h2> {{entry.title}}: Continued from <span id="spanbind" binder> {{continued_from}} </span> </h2>
+    		<p> {{entry.desc}} </p>
+    		<h3> {{entry.body}} </h3>
+    	</div>
+    </div>
+</div>
+<div class="sidebar container">
+    <div class="row row-centered" style="margin-top: 20px; margin-bottom: 50px;">
+        <div class="col-md-12 col-centered">
+            <input class="btn btn-success" type="button" value="Save" name="save_' + id +'" ng-click="newSave()"></p>
+            <h2>Add continuation to</h2>
+            <select class="form-control" ng-model="selectedItem" ng-options="section.title for section in sections | orderBy : section.section_id : true" id="selector">
+            </select><br>
+            <input class="btn btn-danger" type="button" value="Do it!" name="doit_' + id +'" ng-click="newAdd()"></p>
+        </div>
+    </div>
+</div>
+

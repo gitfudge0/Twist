@@ -1,0 +1,64 @@
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+}
+
+html,
+body{
+    width: 100%;
+    height: 100%;
+}
+body{
+    overflow-x: hidden;
+    background: #FAFAFA;
+}
+#redirect{
+    margin-top: 25%;
+}
+#redirect div{
+    text-align: center;
+}
+#redirect button{
+    width: 80px;
+    height: 40px;
+}
+textarea{
+    resize: none;
+}
+
+
+.main-container{
+    background: white;
+    box-shadow: 0 0 5px #ccc;
+    width: 78%;
+    margin: 1%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.sidebar{
+    background: white;
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 5px #ccc;
+    padding-top: 300px;
+}

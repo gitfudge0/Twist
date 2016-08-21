@@ -1,0 +1,76 @@
+<div class="row outerrow">
+	<a href="#/write">
+	    <div class="col-md-6" style="background: #0F77FF; color: #0F77FF;">
+	        <div class="wrap" style="color: white;">
+	            <p>Write some</p>
+	            <p class="left">Write some</p>
+	            <p class="right">Write some</p>
+	        </div>
+	    </div>
+    </a>
+    <a href="#/test">
+	    <div class="col-md-6" style="color: #0F77FF;">
+	        <div class="wrap">
+	            <p>Read some</p>
+	            <p class="left">Read some</p>
+	            <p class="right">Read some</p>
+	        </div>
+	    </div>
+    </a>
+</div>
+
+<!-- Stylesheets -->
+<style type="text/css">
+	body{
+        background: white;
+    }
+    .container-fluid{
+        height: 100% !important;
+        overflow-x: hidden;
+    }
+    .outerrow{
+        height: 100%;
+    }
+    .col-md-6{
+        overflow: hidden;
+        height: 100%;
+        cursor: pointer;
+    }
+    .wrap{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        width: 300px;
+        height: 100px;
+    }
+    .wrap p{
+        font-size: 32px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        transform-origin: left;
+        -moz-transform-origin: left;
+        -webkit-transform-origin: left;
+    }
+    
+    .left, 
+    .right{
+        opacity: 0.1;
+    }
+    .col-md-6:hover .left{
+        transform: translate(-70%, -70%);
+        -moz-transform: translate(-70%, -70%);
+        -webkit-transform: translate(-70%, -70%);
+    }
+    .col-md-6:hover .right{
+        transform: translate(-30%, -30%);
+        -moz-transform: translate(-30%, -30%);
+        -webkit-transform: translate(-30%, -30%);
+    }
+</style>
