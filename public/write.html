@@ -1,3 +1,50 @@
+<div class="container" id="intro-details">
+	<div class="row row-centered">
+		<div class="col-md-6 col-centered" style="padding-top: 10%;">
+			
+			<div class="form-group">
+				<input class="frm-control form-control" type="text" ng-model="intro.title" placeholder="Give your story a title" style="margin-bottom: 30px;" required="">
+				<textarea class="frm-control form-control" rows="5" ng-model="intro.desc" placeholder="A little description for your story" required=""></textarea>	
+				<button class="btn pull-right" ng-click="setIntro()">Start writing</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<style>
+	
+	#intro-details{
+		width: 100%;
+		height: 100%;
+		background: white;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1000;
+	}
+	.frm-control{
+		font-size: 24px;
+		color: red;
+		border: 0;
+		border-bottom: 3px solid red;
+		padding: 20px;
+		box-shadow: 0;
+		box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+		border-radius: 0;
+	}
+	button{
+		background: red;
+		border-radius: 0;
+		font-size: 24px;
+		margin-top: 30px;
+		color: white;
+	}
+	.hide{
+		z-index: -100000;
+		visibility: hidden;
+	}
+</style>
 <div class="container main-container">
     <div class="row row-centered content" style="margin-bottom: 50px;">
         <div class="col-md-8 col-centered">

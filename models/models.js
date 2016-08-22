@@ -19,7 +19,7 @@ var userSchema = new Schema({
 var postSchema = new Schema({
 	postid: String,
 	userid: String,
-	date: Date,
+	date: {type: Date, default: Date.now},
 	title: String,
 	shortdesc: String,
 	content: [{
@@ -30,7 +30,7 @@ var postSchema = new Schema({
 	}],
 	comments: [{
 		user: String,
-		date: Date,
+		date: {type: Date, default: Date.now},
 		body: String,
 	}],
 	connections: [{

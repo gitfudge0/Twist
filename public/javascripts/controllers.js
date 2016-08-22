@@ -40,11 +40,10 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 	$scope.new_continued_from = 'None';
 	$scope.sections = [{
 		title: '-- Select --',
-		section_id: 'aaaa'
+		section_id: ''
 	}];
 	$scope.selectedItem = $scope.sections[0];
 	$scope.entries = [];
-	$scope.continues = [];
 	$scope.newEntry = {
 		section_id: '',
 		title: '',
@@ -53,22 +52,55 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 		connected_to: ''
 	};
 
+	$scope.setIntro = function() {
+		var el = document.getElementById("intro-details");
+		el.style.display = 'none';
+		$http({
+			method: 'POST',
+			url: '/values/save',
+			data: {
+				part: 'intro',
+				userid: 'theDiggu',
+				postid: postid,
+				title: $scope.intro.title,
+				desc: $scope.intro.desc
+			}
+		})
+		.success(function(data) {
+			console.log(data);
+		});
+	};
+
 	$scope.newSave = function() {
 		$scope.section_id = postid + '_SEC' + $scope.section_counter;
 		$scope.newEntry.section_id = $scope.section_id;
+		$scope.newEntry.connected_to = $scope.selectedItem.section_id;
+
 		$scope.entries.push($scope.newEntry);
 		$scope.sections.push({
 			title: $scope.newEntry.title,
 			section_id: $scope.section_id
 		});
+
 		console.log('Section ID: ' + $scope.section_id);
-		console.log($scope.entries);
+		console.log($scope.entries[($scope.entries.length - 1)]);
 		$scope.selectedItem = $scope.sections[($scope.sections.length - 1)];
+		$http({
+			method: 'POST',
+			url: '/values/save',
+			data: {
+				part: 'content',
+				postid: postid,
+				val: $scope.entries[($scope.entries.length - 1)]
+			}
+		})
+		.success(function(data) {
+			console.log(data);
+		});
 	};
 
 	$scope.newAdd = function() {
 		$scope.continued_from = $scope.selectedItem.title;
-		$('#selector option[value="' + $scope.section_id + '"]').attr("selected", "selected");
 		$scope.new_continued_from = $scope.selectedItem.title;
 		var element = document.getElementById("spanbind");
 		angular.element(element).scope().$destroy();
@@ -81,9 +113,6 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 			connected_to: ''
 		};
 		$scope.section_counter += 1;
-		console.log('New Addition');
-		console.log('Length: ' + ($scope.sections.length - 1));
-		
 	};
 
 }]);
