@@ -32,13 +32,15 @@ var postSchema = new Schema({
 		user: String,
 		date: {type: Date, default: Date.now},
 		body: String,
-	}],
-	connections: [{
-		sectionid: String,
-		connectedto: String
 	}]
+});
+
+var connectSchema = new Schema({
+	sectionid: String,
+	connectedto: String
 });
 
 mongoose.model('test', testSchema);
 mongoose.model('users', userSchema);
 mongoose.model('posts', postSchema);
+mongoose.model('connection', connectSchema);

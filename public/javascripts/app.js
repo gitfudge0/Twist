@@ -13,6 +13,10 @@ app.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'write.html',
 			controller: 'writeController'
 		})
+		.when('/read', {
+			templateUrl: 'read.html',
+			controller: 'readController'
+		})
 		.when('/test', {
 			templateUrl: 'test.html',
 			controller: 'myController'

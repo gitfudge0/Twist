@@ -1,0 +1,37 @@
+<div class="container" style="padding-top: 100px;">
+	<div class="row row-centered">
+		<div class="col-md-8 col-centered" ng-hide="display">
+			<div class="table-responsive" style="text-align: center;">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Date</th>
+						<th>User</th>
+						<th>Title</th>
+						<th>Desc</th>
+					</tr>
+					<tr ng-repeat="post in posts | orderBy: post.date">
+						
+							<td><a ng-href="" ng-click="postDetails(post.postid)"> {{post.date}} </a></td>
+							<td><a ng-href="" ng-click="postDetails(post.postid)"> {{post.userid}} </a></td>
+							<td><a ng-href="" ng-click="postDetails(post.postid)"> {{post.title}} </a></td>
+							<td><a ng-href="" ng-click="postDetails(post.postid)"> {{post.shortdesc}} </a></td>
+						
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-12 col-centered" ng-show="display">
+			<h1> {{storage.currPost.title}} </h1>
+			<h6> {{storage.currPost.shortdesc}} </h6>
+			<h1 style="margin-top: 50px;"> {{storage.currPost.content[0].title}} </h1>
+			<h3> {{storage.currPost.content[0].body}} </h3>
+		</div>
+	</div>
+	<div class="row row-centered" id="binder" binder ng-repeat="all in storage.allSections">
+		<div class="col-md-3 col-centered" ng-repeat="content in storage.nextContent" id="{{content.sectionid}}">
+			<a ng-href="" ng-click="continuePosts(content.sectionid)"><h1> {{content.title}} </h1></a>
+			<a ng-href="" ng-click="continuePosts(content.sectionid)"><h6> {{content.desc}} </h6></a>
+			<h3> {{content.body}} </h3>
+		</div>
+	</div>
+</div>

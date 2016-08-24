@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Test = mongoose.model('test');
 var Posts = mongoose.model('posts');
+var Connections = mongoose.model('connection');
 
 
 router.post('/test', function(req, res) {
@@ -61,25 +62,16 @@ router.post('/save', function(req, res) {
 				}
 			
 		});
-		Posts.update({
-				postid: req.body.postid
-			}, 
-			{
-				$push: { 
-					connections: {
-						sectionid: req.body.val.section_id,
-						connectedto: req.body.val.connected_to
-					} 
-				}
-			}, 
-			function(err, updated) {
-				if (err || !updated) {
-					console.log(err);
-				} else {
-					console.log(updated);
-				}
-			
-		});
+		var connect = new Connections();
+		connect.sectionid = req.body.val.section_id;
+		connect.connectedto = req.body.val.connected_to;
+
+		connect.save(function(err, saved) {
+			if (err) {
+				console.log(err);
+			}
+			console.log(saved);
+		})
 		
 		console.log(req.body.val);
 	} else {
@@ -87,5 +79,57 @@ router.post('/save', function(req, res) {
 	}
 	return res.status(200).send('Received Data');
 });
+
+
+router.post('/list', function(req, res) {
+	Posts.find(function(err, data) {
+		if (err) {
+			return res.send(err);
+		} else {
+			return res.send(data);
+		}
+	})
+});
+
+
+router.post('/post', function(req, res) {
+	if(req.body.type == 'main') {
+		Posts.find({postid: req.body.postid}, function(err, post) {
+			if (err) {
+				return res.send(err);
+			}
+			return res.send(post);
+		})	
+	}
+	if (req.body.type == 'getsection') {
+		Connections.find({
+			connectedto: req.body.sectionid
+		}, function(err, data) {
+			if (err) {
+				return res.send(err);
+			}
+			return res.send(data);
+		});
+	}
+	if (req.body.type == 'getcontent') {
+		Posts.find({
+			"content.sectionid": req.body.sectionid
+		}, {
+			content: {
+				$elemMatch: {
+					sectionid: req.body.sectionid
+				}
+			}
+		}, function(err, data) {
+			if (err) {
+				return res.send(err);
+			}
+			return res.send(data[0].content);
+		});
+	}
+
+
+});
+
 
 module.exports = router;

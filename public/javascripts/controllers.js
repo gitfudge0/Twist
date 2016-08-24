@@ -1,4 +1,4 @@
-var mainControllers = angular.module('mainControllers', []);
+var mainControllers = angular.module('mainControllers', ['ngStorage']);
 
 
 
@@ -31,10 +31,18 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 
 	var postid = '';
 	var characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for( var i = 0; i < 6; i += 1){
-        var index = Math.floor(Math.random() * (36)) + 1;
-        postid += characters[index];
+    while( true ) {
+    	for( var i = 0; i < 6; i += 1){
+	        var index = Math.floor(Math.random() * (36)) + 1;
+	        postid += characters[index];
+	    }
+	    if (postid.length <= 6) {
+	    	break;
+	    } else {
+	    	postid = '';
+	    }	
     }
+    
 	$scope.section_counter = 1;
 	$scope.continued_from = 'None';
 	$scope.new_continued_from = 'None';
@@ -72,7 +80,7 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 	};
 
 	$scope.newSave = function() {
-		$scope.section_id = postid + '_SEC' + $scope.section_counter;
+		$scope.section_id = 'theDiggu_' + postid + '_SEC' + $scope.section_counter;
 		$scope.newEntry.section_id = $scope.section_id;
 		$scope.newEntry.connected_to = $scope.selectedItem.section_id;
 
@@ -116,3 +124,107 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 	};
 
 }]);
+
+
+
+mainControllers.controller('readController', ['$scope', '$http', '$localStorage', function($scope, $http, $localStorage) {
+
+	$scope.storage = $localStorage;
+	$scope.storage.nextContent = [];
+	$scope.storage.nextSection = [];
+	$scope.storage.currPost = [];
+	$scope.storage.allSections = [];
+
+
+
+	$scope.display = false;
+	$scope.result = [];
+	$scope.currentSection = '';
+	
+	$http({
+		method: 'POST',
+		url: '/values/list',
+	})
+	.success(function(data) {
+		$scope.posts = data;
+	});
+
+	$scope.postDetails = function(postid) {
+
+		$scope.currentSection = '';
+		$http({
+			method: 'POST',
+			url: '/values/post',
+			data: {
+				type: 'main',
+				postid: postid
+			}
+		})
+		.success(function(data) {
+			$scope.storage.currPost = data[0];
+			$scope.display = true;
+			$scope.currentSection = data[0].content[0].sectionid;
+			getSections($scope.currentSection);
+		});
+	};
+
+	$scope.continuePosts = function(sectionid) {
+		var element = document.getElementById("binder");
+		angular.element(element).scope().$destroy();
+		element.removeAttribute('id');
+
+		for(section in $scope.storage.nextSection) {
+			var el = document.getElementById($scope.storage.nextSection[section]);
+			if($scope.storage.nextSection[section] == sectionid) {
+				el.classList.remove('col-md-3');
+				el.classList.add('col-md-12');
+			} else{
+				el.style.display = 'none';	
+			}
+			
+		}
+
+		getSections(sectionid);
+	};
+
+
+	function getSections(section) {
+		$scope.storage.allSections.push(section);
+		$scope.storage.nextContent = [];
+		$scope.storage.nextSection = [];
+		$http({
+			method: 'POST',
+			url: '/values/post',
+			data: {
+				type: 'getsection',
+				sectionid: section
+			}
+		})
+		.success(function(data) {
+			for(datum in data) {
+				$scope.storage.nextSection.push(data[datum].sectionid);
+				getContent(data[datum].sectionid);
+			}
+		});
+	};
+
+	function getContent(sect) {
+		$scope.nextContent = [];
+		$http({
+			method: 'POST',
+			url: '/values/post',
+			data: {
+				type: 'getcontent',
+				sectionid: sect
+			}
+		})
+		.success(function(data) {
+			$scope.storage.nextContent.push(data[0])
+		});	
+	};	
+	
+
+}]);
+
+
+
