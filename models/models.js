@@ -9,11 +9,13 @@ var testSchema = new Schema({
 
 var userSchema = new Schema({
 	userid: String,
-	name: String,
-	email: String,
 	password: String,
-	acctype: String,
-	lastip: String
+	facebook: {
+		id: String,
+		token: String,
+		email: String,
+		name: String
+	}
 });
 
 var postSchema = new Schema({

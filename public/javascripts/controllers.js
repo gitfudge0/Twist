@@ -1,25 +1,7 @@
-var mainControllers = angular.module('mainControllers', ['ngStorage']);
-
-
-
-mainControllers.controller('myController', ['$scope', '$http', function($scope, $http) {
-	$scope.title = 'Kickass Achievement';
-	$scope.test = '';
-	$scope.result = '';
-	$scope.nodeSend = function() {
-		$http
-			.post('/values/test', {
-				val: $scope.test
-			})
-			.success(function(data) {
-				console.log(data);
-				$scope.result = data;
-			})
-			.error(function(data) {
-				console.log(data);
-			});
-	};
-}]);
+var mainControllers = angular.module('mainControllers', ['ngStorage']).run(function($rootScope) {
+	$rootScope.authenticated = false;
+	$rootScope.currentUser = '';
+});
 
 mainControllers.directive('binder', function() {
 	return {
@@ -27,7 +9,30 @@ mainControllers.directive('binder', function() {
 	};
 });
 
-mainControllers.controller('writeController', ['$scope', '$http', function($scope, $http) {
+mainControllers.controller('dummyController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+	if($rootScope.authenticated === true) {
+		$location.path('/main');
+	}
+}]);
+
+mainControllers.controller('myController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
+
+	// if($rootScope.authenticated === false) {
+	// 	$location.path('/');
+	// }
+
+	
+	$http
+		.post('/values/getUser')
+		.success(function(data) {
+			$rootScope.currentUser = data;
+		});
+
+
+}]);
+
+
+mainControllers.controller('writeController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
 
 	var postid = '';
 	var characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -127,7 +132,7 @@ mainControllers.controller('writeController', ['$scope', '$http', function($scop
 
 
 
-mainControllers.controller('readController', ['$scope', '$http', '$localStorage', function($scope, $http, $localStorage) {
+mainControllers.controller('readController', ['$scope', '$http', '$localStorage', '$rootScope',  function($scope, $http, $localStorage, $rootScope) {
 
 	$scope.storage = $localStorage;
 	$scope.storage.nextContent = [];
@@ -226,5 +231,41 @@ mainControllers.controller('readController', ['$scope', '$http', '$localStorage'
 
 }]);
 
+mainControllers.controller('authController', ['$scope', '$http', '$location', '$rootScope', '$localStorage', function($scope, $http, $location, $rootScope, $localStorage) {
+	$scope.storage = $localStorage;
+	//$scope.storage.newUser = {};
+	$scope.user = {
+		username: '',
+		password: ''
+	};
+	$scope.errorMessage = '';
+
+	$scope.signup = function() {
+		$http
+			.post('/auth/signup', $scope.user)
+			.success(function(data) {
+				if(data.state == 'success') {
+					$scope.errorMessage = data.message;	
+					$location.path('/test');
+					$rootScope.currentUser = data.user;
+					$scope.storage.newUser = data.user;
+				} 
+				$scope.errorMessage = data.message;	
+			});
+	};
+
+	$scope.login = function() {
+		$http
+			.post('/auth/login', $scope.user)
+			.success(function(data) {
+				console.log(data);
+				if(data.state == 'success') {
+					$rootScope.currentUser = data.user;
+					$scope.errorMessage = data.message;	
+				} 
+				$scope.errorMessage = data.message;	
+			});
+	};
+}]);
 
 

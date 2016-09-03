@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var User = mongoose.model('users');
 var Test = mongoose.model('test');
 var Posts = mongoose.model('posts');
 var Connections = mongoose.model('connection');
@@ -129,6 +130,15 @@ router.post('/post', function(req, res) {
 	}
 
 
+});
+
+router.post('/getUser', function(req, res) {
+	User.findOne({'_id': req.session.passport.user}, function(err, user) {
+		if(err) {
+			return res.send(err);
+		}
+		return res.send(user);
+	});
 });
 
 

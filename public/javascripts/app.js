@@ -6,6 +6,18 @@ var app = angular.module('myApp', [
 app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
+			templateUrl: 'ind.html',
+			controller: 'dummyController'
+		})
+		.when('/login', {
+			templateUrl: 'login.html',
+			controller: 'authController'
+		})
+		.when('/signup', {
+			templateUrl: 'signup.html',
+			controller: 'authController'
+		})
+		.when('/main', {
 			templateUrl: 'main.html',
 			controller: 'myController'
 		})
