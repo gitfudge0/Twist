@@ -1,4 +1,4 @@
-var mainControllers = angular.module('mainControllers', ['ngStorage']).run(function($rootScope) {
+var mainControllers = angular.module('mainControllers', ['ngMessages', 'ngStorage', 'ngMaterial']).run(function($rootScope) {
 	$rootScope.authenticated = false;
 	$rootScope.currentUser = '';
 });
@@ -9,10 +9,16 @@ mainControllers.directive('binder', function() {
 	};
 });
 
-mainControllers.controller('dummyController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
-	if($rootScope.authenticated === true) {
-		$location.path('/main');
-	}
+mainControllers.controller('dummyController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
+	// if($rootScope.authenticated === true) {
+	// 	$location.path('/main');
+	// }
+	$http
+		.post('/values/getUser')
+		.success(function(data) {
+			$rootScope.currentUser = data;
+			$rootScope.authenticated = true;
+		});
 }]);
 
 mainControllers.controller('myController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
@@ -32,16 +38,16 @@ mainControllers.controller('myController', ['$scope', '$http', '$rootScope', '$l
 }]);
 
 
-mainControllers.controller('writeController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+mainControllers.controller('writeController', ['$scope', '$http', '$rootScope', '$mdSidenav', function($scope, $http, $rootScope, $mdSidenav) {
 
 	var postid = '';
 	var characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     while( true ) {
-    	for( var i = 0; i < 6; i += 1){
+    	for( var i = 0; i < 10; i += 1){
 	        var index = Math.floor(Math.random() * (36)) + 1;
 	        postid += characters[index];
 	    }
-	    if (postid.length <= 6) {
+	    if (postid.length <= 10) {
 	    	break;
 	    } else {
 	    	postid = '';
@@ -64,10 +70,10 @@ mainControllers.controller('writeController', ['$scope', '$http', '$rootScope', 
 		body: '',
 		connected_to: ''
 	};
-
+	$scope.display = false;
+	
 	$scope.setIntro = function() {
-		var el = document.getElementById("intro-details");
-		el.style.display = 'none';
+		$scope.display = true;
 		$http({
 			method: 'POST',
 			url: '/values/save',
@@ -85,7 +91,7 @@ mainControllers.controller('writeController', ['$scope', '$http', '$rootScope', 
 	};
 
 	$scope.newSave = function() {
-		$scope.section_id = 'theDiggu_' + postid + '_SEC' + $scope.section_counter;
+		$scope.section_id = postid + '_SEC' + $scope.section_counter;
 		$scope.newEntry.section_id = $scope.section_id;
 		$scope.newEntry.connected_to = $scope.selectedItem.section_id;
 
@@ -177,18 +183,14 @@ mainControllers.controller('readController', ['$scope', '$http', '$localStorage'
 		var element = document.getElementById("binder");
 		angular.element(element).scope().$destroy();
 		element.removeAttribute('id');
+		document.getElementsByClassName('hider').className = 'ng-show';
 
 		for(section in $scope.storage.nextSection) {
 			var el = document.getElementById($scope.storage.nextSection[section]);
-			if($scope.storage.nextSection[section] == sectionid) {
-				el.classList.remove('col-md-3');
-				el.classList.add('col-md-12');
-			} else{
+			if($scope.storage.nextSection[section] != sectionid) {
 				el.style.display = 'none';	
 			}
-			
 		}
-
 		getSections(sectionid);
 	};
 
@@ -249,6 +251,8 @@ mainControllers.controller('authController', ['$scope', '$http', '$location', '$
 					$location.path('/test');
 					$rootScope.currentUser = data.user;
 					$scope.storage.newUser = data.user;
+					$rootScope.authenticated = true;
+					$location.path("/");
 				} 
 				$scope.errorMessage = data.message;	
 			});
@@ -262,6 +266,8 @@ mainControllers.controller('authController', ['$scope', '$http', '$location', '$
 				if(data.state == 'success') {
 					$rootScope.currentUser = data.user;
 					$scope.errorMessage = data.message;	
+					$rootScope.authenticated = true;
+					$location.path("/");
 				} 
 				$scope.errorMessage = data.message;	
 			});

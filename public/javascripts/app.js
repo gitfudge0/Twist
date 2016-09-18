@@ -1,9 +1,14 @@
 var app = angular.module('myApp', [
+	'ngMessages',
+	'ngMaterial',
 	'ngRoute',
 	'mainControllers'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', '$mdThemingProvider', function($routeProvider, $mdThemingProvider) {
+	$mdThemingProvider.theme('default')
+		.primaryPalette('blue');
+
 	$routeProvider
 		.when('/', {
 			templateUrl: 'ind.html',

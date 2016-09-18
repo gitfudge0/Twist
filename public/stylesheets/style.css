@@ -25,7 +25,10 @@ body{
 }
 body{
     overflow-x: hidden;
-    background: #FAFAFA;
+    background: white;
+}
+md-content {
+    background: white;
 }
 #redirect{
     margin-top: 25%;
@@ -40,7 +43,6 @@ body{
 textarea{
     resize: none;
 }
-
 
 .main-container{
     background: white;

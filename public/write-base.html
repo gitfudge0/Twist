@@ -1,0 +1,89 @@
+<!-- <div class="container" id="intro-details">
+	<div class="row row-centered">
+		<div class="col-md-6 col-centered" style="padding-top: 10%;">
+			
+			<div class="form-group">
+				<input class="frm-control form-control" type="text" ng-model="intro.title" placeholder="Give your story a title" style="margin-bottom: 30px;" required="">
+				<textarea class="frm-control form-control" rows="5" ng-model="intro.desc" placeholder="A little description for your story" required=""></textarea>	
+				<button class="btn pull-right" ng-click="setIntro()">Start writing</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<style>
+	
+	#intro-details{
+		width: 100%;
+		height: 100%;
+		background: white;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1000;
+	}
+	.frm-control{
+		font-size: 24px;
+		color: red;
+		border: 0;
+		border-bottom: 3px solid red;
+		padding: 20px;
+		box-shadow: 0;
+		box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+		border-radius: 0;
+	}
+	button{
+		background: red;
+		border-radius: 0;
+		font-size: 24px;
+		margin-top: 30px;
+		color: white;
+	}
+	.hide{
+		z-index: -100000;
+		visibility: hidden;
+	}
+</style>
+<div class="container main-container">
+    <div class="row row-centered content" style="margin-bottom: 50px;">
+        <div class="col-md-8 col-centered">
+        	<div class="row row-centered" style="margin-top: 20px;">
+        		<div class="col-md-12 form-group col-centered">
+        			<h1>Section {{section_counter}}: Continued from {{new_continued_from}} </h1>
+        			<input type="text" class="form-control" placeholder="Title" ng-model="newEntry.title" id="title_{{section_counter}}">
+        		</div>
+        	</div>
+        	<div class="row row-centered">
+        		<div class="col-md-12 form-group col-centered">
+        			<input type="text" class="form-control" placeholder="Description" ng-model="newEntry.desc" id="desc_{{section_counter}}">
+        		</div>
+        	</div>
+        	<div class="row row-centered">
+        		<div class="col-md-12 col-centered">
+        			<textarea class="form-control" placeholder="What happens now?" rows="20" ng-model="newEntry.body" id="body_{{section_counter}}"></textarea>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div class="row row-centered" ng-repeat="entry in entries">
+    	<div class="col-md-8 col-centered">
+    		<h2> {{entry.title}}: Continued from <span id="spanbind" binder> {{continued_from}} </span> </h2>
+    		<p> {{entry.desc}} </p>
+    		<h3> {{entry.body}} </h3>
+    	</div>
+    </div>
+</div>
+<div class="sidebar container">
+    <div class="row row-centered" style="margin-top: 20px; margin-bottom: 50px;">
+        <div class="col-md-12 col-centered">
+            <input class="btn btn-success" type="button" value="Save" name="save_' + id +'" ng-click="newSave()"></p>
+            <h2>Add continuation to</h2>
+            <select class="form-control" ng-model="selectedItem" ng-options="section.title for section in sections | orderBy : section.section_id : true" id="selector">
+            </select><br>
+            <input class="btn btn-danger" type="button" value="Do it!" name="doit_' + id +'" ng-click="newAdd()"></p>
+        </div>
+    </div>
+</div>
+
+ -->
